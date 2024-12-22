@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Scheduling App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #slots div {
+      margin: 10px;
+      cursor: pointer;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    #slots div:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Book a Meeting</h1>
+    <div id="calendar"></div>
+    <div id="confirmation" class="hidden">
+      <p>Appointment Confirmed!</p>
+      <button id="back">Back</button>
+    </div>
+    <div id="slot-selection" class="hidden">
+      <h2>Select a Time Slot:</h2>
+      <div id="slots"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const calendar = document.getElementById('calendar');
+      const slotSelection = document.getElementById('slot-selection');
+      const confirmation = document.getElementById('confirmation');
+      const backButton = document.getElementById('back');
+      const slotsContainer = document.getElementById('slots');
+
+      // Simulate a basic calendar with available dates
+      const availableDates = [
+        "2024-12-24", "2024-12-25", "2024-12-26"
+      ];
+
+      // Simulate time slots for each date
+      const timeSlots = {
+        "2024-12-24": ["10:00 AM", "2:00 PM", "4:00 PM"],
+        "2024-12-25": ["11:00 AM", "1:00 PM", "3:00 PM"],
+        "2024-12-26": ["9:00 AM", "12:00 PM", "5:00 PM"]
+      };
+
+      // Render available dates
+      availableDates.forEach(date => {
+        const dateButton = document.createElement('button');
+        dateButton.textContent = date;
+        dateButton.onclick = () => showTimeSlots(date);
+        calendar.appendChild(dateButton);
+      });
+
+      function showTimeSlots(date) {
+        // Hide calendar and show time slots
+        calendar.classList.add('hidden');
+        slotSelection.classList.remove('hidden');
+        
+        // Clear previous slots
+        slotsContainer.innerHTML = '';
+
+        // Display time slots for selected date
+        timeSlots[date].forEach(time => {
+          const slot = document.createElement('div');
+          slot.textContent = time;
+          slot.onclick = () => confirmBooking(date, time);
+          slotsContainer.appendChild(slot);
+        });
+      }
+
+      function confirmBooking(date, time) {
+        // Hide time slots and show confirmation
+        slotSelection.classList.add('hidden');
+        confirmation.classList.remove('hidden');
+        
+        alert(`Your appointment is confirmed for ${date} at ${time}`);
+      }
+
+      backButton.addEventListener('click', () => {
+        confirmation.classList.add('hidden');
+        calendar.classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
